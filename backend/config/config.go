@@ -5,9 +5,10 @@ import (
 )
 
 type Config struct {
-	PORT        string `mapstructure:"port"`
-	MongoUri    string `mapstructure:"MONGO_URI"`
-	MongoDBName string `mapstructure:"MONGO_DB_NAME"`
+	PORT string `mapstructure:"port"`
+	// MongoUri    string `mapstructure:"MONGO_URI"`
+	// MongoDBName string `mapstructure:"MONGO_DB_NAME"`
+	GeminiApi string `mapstructure:"GEMINI_API_KEY"`
 }
 
 func LoadConfig(path string) (config Config, err error) {
