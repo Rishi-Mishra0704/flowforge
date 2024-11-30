@@ -1,0 +1,19 @@
+{
+  "nodes": [
+    {"id": 1, "shape": "Start", "label": "Start"},
+    {"id": 2, "shape": "Process", "label": "Create new Node"},
+    {"id": 3, "shape": "Decision", "label": "Is self.head None?"},
+    {"id": 4, "shape": "Process", "label": "Set self.head to new Node"},
+    {"id": 5, "shape": "Process", "label": "Set last_node.next to new Node"},
+    {"id": 6, "shape": "Process", "label": "Traverse to last node"},
+    {"id": 7, "shape": "End", "label": "End"}
+  ],
+  "edges": [
+    {"source": 1, "target": 2, "label": ""},
+    {"source": 2, "target": 3, "label": ""},
+    {"source": 3, "target": 4, "label": "Yes"},
+    {"source": 4, "target": 7, "label": ""},
+    {"source": 3, "target": 6, "label": "No"},
+    {"source": 6, "target": 5, "label": ""}
+  ]
+}

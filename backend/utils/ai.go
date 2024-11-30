@@ -10,7 +10,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func AskAI(content string, config config.Config) genai.Part {
+func AskAI(content string, config config.Config) string {
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(config.GeminiApi))
 	if err != nil {
@@ -20,6 +20,7 @@ func AskAI(content string, config config.Config) genai.Part {
 
 	model := client.GenerativeModel("gemini-1.5-flash")
 	prompt := fmt.Sprintf(`
+<<<<<<< HEAD
 	Create a minimal and structured flowchart in JSON format based on the given codebase. 
 	The flowchart should be constructed using the following models:
 	
@@ -64,6 +65,26 @@ func AskAI(content string, config config.Config) genai.Part {
 	
 	Codebase:
 	%s`, content)
+=======
+Create a minimal and structured flowchart in JSON format based on the given codebase. 
+The flowchart should contain the following types of shapes:
+- "Start": Represent the beginning of the flow.
+- "Process": Represent basic operations or steps in the code.
+- "Decision": Represent conditional statements or branches in the code.
+- "End": Represent the conclusion of the flow.
+
+Ensure the flowchart uses only these shapes and focuses on the logic of the code. 
+The flowchart should not just be shapes added arbitrarily to lines of code, but should reflect the actual flow of execution, including decisions and processes, as well as how they are connected. 
+
+Return the flowchart as a JSON object with nodes and edges, where:
+- Each node should represent a logical step in the code with a unique identifier, a shape, and the action or decision being represented.
+- Each edge should represent the flow from one node to another with labels for the condition (for Decision nodes).
+
+Don't add file extension.
+
+Codebase:
+%s`, content)
+>>>>>>> 690f5b6 (json file creation)
 
 	// Call CountTokens to get the input token count (`total tokens`).
 	tokResp, err := model.CountTokens(ctx, genai.Text(prompt))
@@ -72,15 +93,22 @@ func AskAI(content string, config config.Config) genai.Part {
 	}
 
 	fmt.Println("total_tokens:", tokResp.TotalTokens)
-	// ( total_tokens: 10 )
 
+	// Generate the response
 	resp, err := model.GenerateContent(ctx, genai.Text(prompt))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	part := printResponse(resp)
-	return part
+
+	// Type assertion for genai.Text
+	text, ok := part.(genai.Text)
+	if !ok {
+		log.Fatal("Failed to convert Part to Text")
+	}
+
+	return string(text)
 }
 
 func printResponse(resp *genai.GenerateContentResponse) genai.Part {
