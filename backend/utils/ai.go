@@ -44,7 +44,11 @@ func AskAI(content string, config config.Config) string {
 	  Use the following definitions for guidance:
 	  Node: %v
 	  Edge: %v
-	  edges have a "condition" field that represents the condition for the edge. edges dont have labels.
+	  nodes have an "id", "label", and "type" field that represent the node's ID, label, and type.
+	  edges have a "source", "target", and "condition" field that represent the edge's source node ID, target node ID, and condition.
+	  Fill all the data based on the given Nodes, Edges, and codebase.
+
+	  it will be a typical flowchart with nodes and edges.
 	  Codebase:
 	  %s
 	  `, example, models.Node{}, models.Edge{}, content)

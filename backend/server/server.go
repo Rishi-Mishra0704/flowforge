@@ -45,6 +45,8 @@ func (server *Server) setupRouter() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
+	router.POST("/flowchart", server.GetFlowChartHandler)
+
 	server.router = router
 }
 

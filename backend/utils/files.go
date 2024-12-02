@@ -4,7 +4,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"path/filepath"
 )
 
 // OpenFile opens a file and returns the file pointer.
@@ -27,37 +26,14 @@ func ReadFileContent(file *os.File) ([]byte, error) {
 	return content, nil
 }
 
-// ReadMultipleFiles reads all files in a given directory and returns their combined content as a string.
-func ReadMultipleFiles(dirPath string) (string, error) {
+// ReadMultipleFiles combines the content of multiple files provided as a slice of strings.
+func ReadMultipleFiles(contents []string) (string, error) {
 	var contentBuilder string
 
-	// Walk through the directory and read files
-	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
+	// Iterate over the provided file contents
+	for _, content := range contents {
+		contentBuilder += content + "\n"
+	}
 
-		// Only process files (skip directories)
-		if !info.IsDir() {
-			// Open the file using OpenFile function
-			file, err := OpenFile(path)
-			if err != nil {
-				return err
-			}
-			defer file.Close()
-
-			// Read the content of the file
-			content, err := ReadFileContent(file)
-			if err != nil {
-				return err
-			}
-
-			// Append content to the combined content string
-			contentBuilder += string(content) + "\n"
-		}
-		return nil
-	})
-
-	// Return the combined content or an error if any occurred
-	return contentBuilder, err
+	return contentBuilder, nil
 }
