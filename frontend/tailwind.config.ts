@@ -8,11 +8,14 @@ export default {
   ],
   theme: {
     extend: {
+      spacing: {
+        'calc-dvh-69': 'calc(100dvh - 69px)',
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 } satisfies Config;

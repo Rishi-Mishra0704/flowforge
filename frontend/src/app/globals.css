@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.calc-dvh-69 {
+  height: calc(100vh - 69px);
+}
