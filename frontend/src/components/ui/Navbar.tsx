@@ -1,4 +1,5 @@
 
+import Link from "next/link";
 import React from "react";
 
 const Navbar: React.FC = () => {
@@ -7,15 +8,12 @@ const Navbar: React.FC = () => {
     <>
       <div className="navbar bg-base-200">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">daisyUI</a>
+          <Link href="/" className="btn btn-ghost text-xl">FlowForge</Link>
         </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1">
             <li>
-              <a>Link 1</a>
-            </li>
-            <li>
-              <a>Link 2</a>
+              <Link href="/flowchart">Visualizer</Link>
             </li>
           </ul>
         </div>
