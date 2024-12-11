@@ -65,13 +65,14 @@ const FlowchartPage: React.FC = () => {
         <FileInput onFileChange={handleFileUpload} />
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>
-
+      {flowchartData && (
       <div className="p-4 bg-white border-2 border-gray-300 rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold text-gray-700 mb-4">
           Interactive Flowchart
         </h2>
-        <FlowChart data={flowchartData ?? data} />
+        <FlowChart data={flowchartData} />
       </div>
+      )}
     </div>
   );
 };

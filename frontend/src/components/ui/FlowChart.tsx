@@ -18,6 +18,16 @@ type FlowChartProps = {
 };
 
 const FlowChart: React.FC<FlowChartProps> = ({ data }) => {
+
+
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  if (!data) {
+    return null;
+  }
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const memoizedData = useMemo(() => {
@@ -33,8 +43,8 @@ const FlowChart: React.FC<FlowChartProps> = ({ data }) => {
     // Assign shapes and colors based on type
     const updatedNodes = data.nodes.map((node) => ({
       ...node,
-      shape: styleMap[node.type || "process"].shape, // Default to "process" shape
-      color: { background: styleMap[node.type || "process"].color }, // Default color
+      shape: styleMap[node.type || "process"]?.shape, // Default to "process" shape
+      color: { background: styleMap[node.type || "process"]?.color }, // Default color
       font: { color: "#fff" }, // White text for better contrast
     }));
 
