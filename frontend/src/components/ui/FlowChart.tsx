@@ -33,10 +33,10 @@ const FlowChart: React.FC<FlowChartProps> = ({ data }) => {
   const memoizedData = useMemo(() => {
     // Map node types to specific shapes and colors
     const styleMap: Record<string, { shape: string; color: string }> = {
-      start: { shape: "box", color: "#3343ff" }, // Soft Mint Green for Start
-      end: { shape: "box", color: "#ff3333" }, // Soft Rose for End
-      decision: { shape: "circle", color: "#5d33ff" }, // Pastel Orange for Decision
-      process: { shape: "ellipse", color: "#c333ff" }, // Light Sky Blue for Process
+      start: { shape: "box", color: "#3343ff" }, 
+      end: { shape: "box", color: "#ff3333" }, 
+      decision: { shape: "circle", color: "#5d33ff" },
+      process: { shape: "ellipse", color: "#c333ff" },
     };
     
 
