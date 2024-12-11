@@ -3,19 +3,21 @@ package main
 import (
 	"log"
 
-	"github.com/Rishi-Mishra0704/flowforge/backend/utils"
+	"github.com/Rishi-Mishra0704/flowforge/backend/config"
+	"github.com/Rishi-Mishra0704/flowforge/backend/server"
 )
 
 func main() {
-	file, err := utils.OpenFile()
+	// Load configuration
+	config, err := config.LoadConfig(".")
 	if err != nil {
 		log.Fatal(err)
 	}
+	server, err := server.NewServer(config)
 
-	content, err := utils.ReadFileContent(file)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
-	log.Println(string(content))
+	server.Start(config.PORT)
+
 }
