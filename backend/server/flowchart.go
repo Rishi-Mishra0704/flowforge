@@ -4,9 +4,10 @@ import (
 	"archive/zip"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
-	"log"
 	"net/http"
+	"sync"
 
 	"github.com/Rishi-Mishra0704/flowforge/backend/models"
 	"github.com/Rishi-Mishra0704/flowforge/backend/utils"
@@ -39,52 +40,75 @@ func (s *Server) GetFlowChartHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to read zip file")
 	}
 
-	// In-memory processing of extracted files
-	var content []string // Collect all file contents here
+	// Concurrently process files
+	contentChan := make(chan string)
+	errChan := make(chan error, len(zipReader.File))
+	var wg sync.WaitGroup
 
 	for _, f := range zipReader.File {
 		if f.FileInfo().IsDir() {
 			continue // Skip directories
 		}
 
-		// Open the file inside the zip
-		rc, err := f.Open()
-		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to open file in zip")
-		}
+		wg.Add(1)
+		go func(f *zip.File) {
+			defer wg.Done()
+			rc, err := f.Open()
+			if err != nil {
+				errChan <- fmt.Errorf("failed to open file in zip: %v", err)
+				return
+			}
+			defer rc.Close()
 
-		// Read the file content into memory
-		fileContent, err := io.ReadAll(rc)
-		rc.Close()
-		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to read file in zip")
-		}
+			fileContent, err := io.ReadAll(rc)
+			if err != nil {
+				errChan <- fmt.Errorf("failed to read file in zip: %v", err)
+				return
+			}
 
-		// Process the content (e.g., store it as a string for further processing)
-		content = append(content, string(fileContent))
+			contentChan <- string(fileContent)
+		}(f)
 	}
 
-	// Process the content array as needed
+	// Close the channel after all files are processed
+	go func() {
+		wg.Wait()
+		close(contentChan)
+		close(errChan)
+	}()
+
+	var content []string
+	for {
+		select {
+		case err := <-errChan:
+			if err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+			}
+		case data, ok := <-contentChan:
+			if !ok {
+				contentChan = nil
+			} else {
+				content = append(content, data)
+			}
+		}
+		if contentChan == nil && len(errChan) == 0 {
+			break
+		}
+	}
+
+	// Process the combined content
 	combinedContent, err := utils.ReadMultipleFiles(content)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to read multiple files")
 	}
+
+	// Generate the flowchart via AI
 	part := utils.AskAI(combinedContent, s.config)
 
-	// Decode the JSON data into the Flowchart struct
 	var flowchart models.Flowchart
 	err = json.Unmarshal([]byte(part), &flowchart)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to decode JSON")
-	}
-
-	// Optionally, iterate over nodes and edges to demonstrate access
-	for _, node := range flowchart.Nodes {
-		log.Printf("Node: ID=%d, Label=%s, Type=%s", node.ID, node.Label, node.Type)
-	}
-
-	for _, edge := range flowchart.Edges {
-		log.Printf("Edge: Source=%d, Target=%d, Condition=%s", edge.Source, edge.Target, edge.Condition)
 	}
 
 	return c.JSON(http.StatusOK, flowchart)
