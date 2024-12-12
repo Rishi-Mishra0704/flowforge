@@ -2,7 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
 
-.calc-dvh-69 {
-  height: calc(100vh - 69px);
+/* *=========== Space & Galaxy with User Colors (HSL) =========== */
+@layer base {
+  :root {
+    --background: 220 15% 95%; /* Very light neutral backdrop */
+    --foreground: 230 15% 10%; /* Deep slate text */
+
+    --card: 220 15% 95%;
+    --card-foreground: 230 15% 10%;
+
+    --popover: 220 15% 95%;
+    --popover-foreground: 230 15% 10%;
+
+    --primary: 233 52% 47%; /* Deep Blue (#3943b7) */
+    --primary-foreground: 220 15% 95%; /* Light contrast for blue */
+
+    --secondary: 240 100% 73%; /* Violet (#7f7eff) */
+    --secondary-foreground: 240 15% 10%;
+
+    --accent: 345 100% 53%; /* Pinkish Red (#ff1053) */
+    --accent-foreground: 220 15% 95%; /* Contrast for red */
+
+    --muted: 240 10% 90%; /* Muted neutral */
+    --muted-foreground: 230 15% 40%; /* For text on muted bg */
+
+    --destructive: 345 100% 53%; /* Matches accent for destructive actions */
+    --destructive-foreground: 220 15% 95%;
+
+    --border: 230 20% 85%; /* Subtle neutral borders */
+    --input: 230 20% 85%;
+    --ring: 233 52% 47%; /* Highlighted blue ring */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 15% 15%; /* Dark slate backdrop */
+    --foreground: 220 15% 95%; /* Light text on dark bg */
+
+    --card: 240 15% 20%; /* Slightly lighter slate */
+    --card-foreground: 220 15% 95%;
+
+    --popover: 240 15% 15%;
+    --popover-foreground: 220 15% 95%;
+
+    --primary: 233 52% 47%; /* Consistent Deep Blue (#3943b7) */
+    --primary-foreground: 240 15% 15%;
+
+    --secondary: 240 100% 73%; /* Consistent Violet (#7f7eff) */
+    --secondary-foreground: 240 15% 20%;
+
+    --accent: 345 100% 53%; /* Consistent Pinkish Red (#ff1053) */
+    --accent-foreground: 240 15% 15%; /* Dark contrast */
+
+    --muted: 240 20% 20%; /* Dark muted neutral */
+    --muted-foreground: 220 15% 75%;
+
+    --destructive: 345 100% 53%; /* Matches accent */
+    --destructive-foreground: 220 15% 95%;
+
+    --border: 240 20% 20%;
+    --input: 240 20% 20%;
+    --ring: 233 52% 47%; /* Highlighted blue ring */
+  }
+}
+
+.shadow-light {
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.shadow-dark {
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.15); /* For dark mode */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
