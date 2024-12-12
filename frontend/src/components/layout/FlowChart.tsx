@@ -3,9 +3,19 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import { Network, Edge, Node } from "vis-network";
 import { DataSet } from "vis-data";
-
+import { STYLE_MAP } from "@/constants";
 export type FlowChartNode = Node & {
-  type?: "start" | "end" | "decision" | "process";
+  type?:
+    | "start"
+    | "end"
+    | "decision"
+    | "process"
+    | "input"
+    | "output"
+    | "preparation"
+    | "connector"
+    | "manual"
+    | "storage";
 };
 
 export type FlowChartData = {
@@ -16,11 +26,8 @@ export type FlowChartData = {
 type FlowChartProps = {
   data: FlowChartData;
 };
-const FlowChart: React.FC<FlowChartProps> = ({ data }) => {
-  if (typeof window === "undefined") {
-    return null;
-  }
 
+const FlowChart: React.FC<FlowChartProps> = ({ data }) => {
   if (!data || data === undefined) {
     return null;
   }
@@ -29,12 +36,6 @@ const FlowChart: React.FC<FlowChartProps> = ({ data }) => {
 
   const memoizedData = useMemo(() => {
     // Map node types to specific shapes and colors
-    const styleMap: Record<string, { shape: string; color: string }> = {
-      start: { shape: "box", color: "#3343ff" },
-      end: { shape: "box", color: "#ff3333" },
-      decision: { shape: "diamond", color: "#5d33ff" },
-      process: { shape: "ellipse", color: "#c333ff" },
-    };
 
     // Transform nodes and apply styles
     const updatedNodes = data.nodes.map((node) => {
@@ -45,8 +46,8 @@ const FlowChart: React.FC<FlowChartProps> = ({ data }) => {
       return {
         id: node.id,
         label: node.label,
-        shape: styleMap[typeKey]?.shape,
-        color: { background: styleMap[typeKey]?.color || "#c333ff" }, // Default color
+        shape: STYLE_MAP[typeKey]?.shape,
+        color: { background: STYLE_MAP[typeKey]?.color || "#c333ff" }, // Default color
         font: { color: "#fff" }, // White text for contrast
       };
     });
@@ -90,7 +91,7 @@ const FlowChart: React.FC<FlowChartProps> = ({ data }) => {
   return (
     <div
       ref={containerRef}
-      className="h-[500px] w-full overflow-auto border-2 border-gray-300 rounded-lg shadow-md"
+      className="h-[500px] w-1/2 md:w-full overflow-auto border-2 border-gray-300 rounded-lg shadow-md"
     />
   );
 };

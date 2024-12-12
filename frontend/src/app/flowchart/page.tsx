@@ -5,6 +5,9 @@ import FlowChart, { FlowChartData } from "@/components/layout/FlowChart";
 import { Alert } from "@/components/ui/alert";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import FileInput from "@/components/layout/FileInput";
+import { data } from "@/data/dummy_flowchart_data";
+
+
 
 const FlowchartPage: React.FC = () => {
   const [flowchartData, setFlowchartData] = useState<FlowChartData | null>(
@@ -68,18 +71,16 @@ const FlowchartPage: React.FC = () => {
         </CardContent>
       </Card>
 
-      {flowchartData && (
-        <Card className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
-          <CardHeader>
-            <CardTitle className="text-gray-700 dark:text-gray-200">
-              Interactive Flowchart
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <FlowChart data={flowchartData} />
-          </CardContent>
-        </Card>
-      )}
+      <Card className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <CardHeader>
+          <CardTitle className="text-gray-700 dark:text-gray-200">
+            Interactive Flowchart
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FlowChart data={flowchartData ?? data} />
+        </CardContent>
+      </Card>
     </div>
   );
 };
