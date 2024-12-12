@@ -24,7 +24,7 @@ const FlowChart: React.FC<FlowChartProps> = ({ data }) => {
     return null;
   }
 
-  if (!data) {
+  if (!data && data === undefined) {
     return null;
   }
 

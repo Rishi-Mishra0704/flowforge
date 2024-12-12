@@ -69,7 +69,6 @@ func (s *Server) GetFlowChartHandler(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to read multiple files")
 	}
-	log.Println(combinedContent)
 	part := utils.AskAI(combinedContent, s.config)
 
 	// Decode the JSON data into the Flowchart struct
