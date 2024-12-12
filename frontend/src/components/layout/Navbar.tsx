@@ -21,7 +21,7 @@ import {
 import { Button } from "../ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { ToggleTheme } from "../layout/toggle-theme";
+import { ToggleTheme } from "./toggle-theme";
 
 interface RouteProps {
   href: string;
@@ -72,7 +72,7 @@ const featureList: FeatureProps[] = [
 export const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   return (
-    <header className="px-4 top-5 mx-2 sticky z-40 flex justify-between items-center p-2 my-4 rounded-2xl border border-destructive dark:border-primary">
+    <header className="shadow-inner bg-opacity-15 w-[90%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary z-40 rounded-2xl flex justify-between items-center p-2 bg-card">
       <Link href="/" className="font-bold text-lg flex items-center">
         <ChevronsDown className="bg-gradient-to-tr border-secondary from-primary via-primary/70 to-primary rounded-lg w-9 h-9 mr-2 border text-white" />
         Flow Forge
