@@ -23,12 +23,8 @@ func (cv *Validator) Validate(i interface{}) error {
 	return cv.validator.Struct(i)
 }
 
-func NewServer(config config.Config) (*Server, error) {
-
-	server := &Server{
-
-		config: config,
-	}
+func NewServer(config config.Config) (*Server, error) {	server := &Server{
+		config: config,	}
 	server.setupRouter()
 	return server, nil
 }
@@ -46,7 +42,7 @@ func (server *Server) setupRouter() {
 	})
 
 	router.POST("/flowchart", server.GetFlowChartHandler)
-
+	router.POST("/login", server.Login)
 	server.router = router
 }
 
